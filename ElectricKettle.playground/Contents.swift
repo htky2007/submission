@@ -34,7 +34,7 @@ class HeatingControl: HeatingDelegate {
     }
     
     func capacityCheck(currentCapacity: Int) {
-        let　aboveCapacity = currentCapacity >= maximumCapacity
+        let aboveCapacity = currentCapacity >= maximumCapacity
         if aboveCapacity {
             heating.stoppedHeating = true
             print("容量オーバーです。加熱できません。")
@@ -64,4 +64,3 @@ class Heating {
 let heatingControl = HeatingControl()
 heatingControl.registerDelegate()
 heatingControl.HeatingStart()
-currentCapacity = 3000
