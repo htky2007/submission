@@ -1,7 +1,7 @@
 import UIKit
 protocol HeatingDelegate {
     func notificationTemperature(currentTmperature: Int)
-    func energizationCheck()
+    func energizationCheck(isEnergizationing: Bool)
 }
 
 class HeatingControl: HeatingDelegate {
@@ -24,10 +24,8 @@ class HeatingControl: HeatingDelegate {
         }
     }
     
-    func energizationCheck() {
-        let emergencyTeleservice = energizationCheck
-        if energizationCheck() -> Bool {
-            heating.energizationCheck = false
+    func energizationCheck(isEnergizationing: Bool) {
+        if !isEnergizationing {
             print("通電が確認できないので加熱停止します。")
         }
     }
@@ -38,6 +36,10 @@ class Heating {
     var stoppedHeating = false
     var delegate : HeatingDelegate?
     var energizationCheck = true
+    
+    func hoge() {
+        delegate?.energizationCheck(isEnergizationing: false)
+    }
     
     func continuedHeating() {
         while !stoppedHeating {
