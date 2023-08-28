@@ -38,6 +38,8 @@ class HeatingControl: HeatingDelegate {
         if aboveCapacity {
             heating.stoppedHeating = true
             print("容量オーバーです。加熱できません。")
+        }
+           
     }
 }
 
