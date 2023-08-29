@@ -10,6 +10,12 @@ class HeatingControl: HeatingDelegate {
     let boilingPoint = 100 //℃
     let maximumCapacity = 2000 //cc
     
+    var currentCapacity = 0
+    
+    func detach() {
+        heating.isEnergizationing = false
+    }
+    
     func registerDelegate() {
         heating.delegate = self
     }
@@ -45,10 +51,10 @@ class HeatingControl: HeatingDelegate {
 
 class Heating {
     var currentTmperature = 0
-    var currentCapacity = 0
     var stoppedHeating = false
     var delegate : HeatingDelegate?
     var energizationCheck = true
+    var isEnergizationing = false
     
     func hoge() {
         delegate?.energizationCheck(isEnergizationing: false)
@@ -56,13 +62,19 @@ class Heating {
     
     func continuedHeating() {
         while !stoppedHeating {
+            if !isEnergizationing {
+                break//ループから抜ける
+            }
             currentTmperature += 1 //1℃ずつ加熱）
             print("今の温度は\(currentTmperature)です。")
             delegate?.notificationTemperature(currentTmperature: currentTmperature)
         }
+        print("温め終了")
     }
 }
 
 let heatingControl = HeatingControl()
+heatingControl.currentCapacity = 3000
 heatingControl.registerDelegate()
+heatingControl.detach()
 heatingControl.HeatingStart()
