@@ -2,7 +2,7 @@ import UIKit
 protocol HeatingDelegate {
     func notificationTemperature(currentTmperature: Int)
     func energizationCheck(isEnergizationing: Bool)
-    func capacityCheck(currentCapacity: Int)
+    func capacityCheck()
 }
 
 class HeatingControl: HeatingDelegate {
@@ -10,7 +10,14 @@ class HeatingControl: HeatingDelegate {
     let boilingPoint = 100 //℃
     let maximumCapacity = 2000 //cc
     
-    var currentCapacity = 0
+    var currentCapacity = 2000
+    
+    func capacityCheck() {
+        if currentCapacity > maximumCapacity {
+            heating.stoppedHeating = true
+            print("容量オーバーです。")
+        }
+    }
     
     func detach() {
         heating.isEnergizationing = false
@@ -20,7 +27,7 @@ class HeatingControl: HeatingDelegate {
         heating.delegate = self
     }
     
-    func HeatingStart() {
+    func heatingStart() {
         heating.continuedHeating()
     }
     
@@ -37,15 +44,6 @@ class HeatingControl: HeatingDelegate {
             heating.stoppedHeating = true
             print("通電が確認できないので加熱を停止します。")
         }
-    }
-    
-    func capacityCheck(currentCapacity: Int) {
-        let aboveCapacity = currentCapacity >= maximumCapacity
-        if aboveCapacity {
-            heating.stoppedHeating = true
-            print("容量オーバーです。加熱できません。")
-        }
-           
     }
 }
 
@@ -69,12 +67,13 @@ class Heating {
             print("今の温度は\(currentTmperature)です。")
             delegate?.notificationTemperature(currentTmperature: currentTmperature)
         }
-        print("温め終了")
+        print("加熱終了")
     }
 }
 
 let heatingControl = HeatingControl()
-heatingControl.currentCapacity = 3000
 heatingControl.registerDelegate()
 heatingControl.detach()
-heatingControl.HeatingStart()
+heatingControl.heatingStart()
+heatingControl.capacityCheck()
+
